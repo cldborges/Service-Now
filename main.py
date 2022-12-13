@@ -6,16 +6,24 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import time
-from datetime import date
 
-costumer_id = 'z0026jjc'
-category = 'Workplace'
-subcategory = 'DWP Win 10 Local Client'
-subsubcategory = 'System Performance'
-tipo = 'Service Request'
-short_description = 'Testando'
-description = '''Testando 123'''
-data_points = '''Testando 321'''
+# costumer_id = 'z0026jjc'
+# category = 'Workplace'
+# subcategory = 'DWP Win 10 Local Client'
+# subsubcategory = 'System Performance'
+# tipo = 'Service Request'
+# short_description = 'Testando'
+# description = '''Testando 123'''
+# data_points = '''Testando 321'''
+
+costumer_id = input('Identificação do usuário: ')
+category = input('Categoria: ')
+subcategory = input('Subcategoria: ')
+subsubcategory = input('Subsubcategoria: ')
+tipo = input('Tipo: ')
+short_description = input('Título: ')
+description = input('Descrição: ')
+# data_points = input('Identificação do usuário: ')
 
 
 url = 'https://siemens.service-now.com'
