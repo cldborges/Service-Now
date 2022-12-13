@@ -8,6 +8,10 @@ from selenium.webdriver.support.ui import Select
 import time
 from datetime import date
 
+category = 'Workplace'
+subcategory = 'DWP Win 10 Local Client'
+subsubcategory = 'System Performance'
+
 
 url = 'https://siemens.service-now.com'
 options = webdriver.ChromeOptions()
@@ -30,4 +34,26 @@ costumer_id = driver.find_element(By.ID, 'sys_display.incident.caller_id')
 costumer_id.send_keys('z0026jjc')
 time.sleep(5)
 Select(driver.find_element(By.ID, 'incident.contact_type')).select_by_visible_text('Walk-in')
+try:
+    WebDriverWait(driver, 15).until(
+    EC.presence_of_element_located((By.ID, 'incident.location_fieldmsg')))
+except:
+    pass
+
+# time.sleep(30)
+WebDriverWait(driver, 15).until(
+    EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.category"]/option[2]'))) #verifica se estão aparecendo mais de uma opção no Category
+Select(driver.find_element(By.ID, 'sys_select.incident.category')).select_by_visible_text(category)
+WebDriverWait(driver, 15).until(
+    EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.subcategory"]/option[2]'))) 
+Select(driver.find_element(By.ID, 'sys_select.incident.subcategory')).select_by_visible_text(subcategory)
+WebDriverWait(driver, 15).until(
+    EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.u_subsubcategory"]/option[2]')))
+Select(driver.find_element(By.ID, 'sys_select.incident.u_subsubcategory')).select_by_visible_text(subsubcategory)
+
+
+
+
+
+
 time.sleep(100)
