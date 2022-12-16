@@ -6,24 +6,31 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import time
+import pandas as pd
 
-# costumer_id = 'z0026jjc'
-# category = 'Workplace'
-# subcategory = 'DWP Win 10 Local Client'
-# subsubcategory = 'System Performance'
-# tipo = 'Service Request'
-# short_description = 'Testando'
-# description = '''Testando 123'''
-# data_points = '''Testando 321'''
 
 costumer_id = input('Identificação do usuário: ')
-category = input('Categoria: ')
-subcategory = input('Subcategoria: ')
-subsubcategory = input('Subsubcategoria: ')
-tipo = input('Tipo: ')
-short_description = input('Título: ')
-description = input('Descrição: ')
+linha = int(input('Qual a linha?: ') ) - 2
+
+df = pd.read_excel('teste.xlsm')
+df = df.drop(['Cod_Category', 'Cod_Category2', 'Cod_Category3', 'Template', ], axis='columns')
+
+# category = input('Categoria: ')
+# subcategory = input('Subcategoria: ')
+# subsubcategory = input('Subsubcategoria: ')
+# short_description = input('Título: ')
+# description = input('Descrição: ')
+# tipo = input('Tipo: ')
 # data_points = input('Identificação do usuário: ')
+
+category = df.loc[linha, 'Category']
+subcategory = df.loc[linha, 'Subcategory']
+subsubcategory = df.loc[linha, 'Subsubcategory']
+short_description = df.loc[linha, 'Short Description']
+description = df.loc[linha, 'Description']
+tipo = df.loc[linha, 'Tipo']
+if pd.isnull(tipo):
+    tipo = 'Incident'
 
 
 url = 'https://siemens.service-now.com'
@@ -33,13 +40,13 @@ driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager(p
 #alterar nas configurações do navegador para abrir a última página visitada
 driver.get(url)
 
-WebDriverWait(driver, 30).until(
+WebDriverWait(driver, 40).until(
     EC.presence_of_element_located((By.XPATH, '//*[@id="gsft_nav"]/div/magellan-favorites-list/ul/li[3]/div/div[1]/a/div[2]/span')))
 criar_novo = driver.find_element(By.XPATH, '//*[@id="gsft_nav"]/div/magellan-favorites-list/ul/li[3]/div/div[1]/a/div[2]/span')
 print(criar_novo.text)
 time.sleep(5)
 criar_novo.click()
-time.sleep(10)
+time.sleep(7)
 
 driver.switch_to.frame('gsft_main')
 
@@ -80,15 +87,23 @@ driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('BORGES
 driver.find_element(By.ID, 'incident.short_description').send_keys(short_description)
 driver.find_element(By.ID, 'incident.description').send_keys(description)
 
+#driver.find_element(By., '//*[@id="tabs2_section"]/span[3]/span[1]').click()
+
+driver.find_element(By.XPATH, '//span[text()="Notes"]').click()
+
+time.sleep(3)
+
 try:
     WebDriverWait(driver, 5).until(
         EC.presence_of_element_located((By.ID, 'incident.u_data_points')))
 
     dp = driver.find_element(By.ID, 'incident.u_data_points').get_attribute('value')
-    # driver.find_element(By.ID, 'incident.u_data_points').send_keys(data_points)
+    dp = dp.replace('!!!', '!!!!')
+    driver.find_element(By.ID, 'incident.u_data_points').clear()
+    driver.find_element(By.ID, 'incident.u_data_points').send_keys(dp)
     # data_points = driver.find_element(By.ID, 'incident.u_data_points')
     print(dp)
 except:
     print('Não tem DP') 
 
-time.sleep(100)
+time.sleep(200)
