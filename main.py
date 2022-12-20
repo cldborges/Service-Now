@@ -9,10 +9,10 @@ import time
 import pandas as pd
 
 
-costumer_id = input('Identificação do usuário: ')
+costumer_id = input('Identificação do usuário: ').strip()
 linha = int(input('Qual a linha?: ') ) - 2
 
-df = pd.read_excel('teste.xlsm')
+df = pd.read_excel('teste.xlsm') #(r'C:\Users\z0026jjc\OneDrive - Atos\teste.xlsm')
 df = df.drop(['Cod_Category', 'Cod_Category2', 'Cod_Category3', 'Template', ], axis='columns')
 
 # category = input('Categoria: ')
@@ -40,7 +40,7 @@ driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager(p
 #alterar nas configurações do navegador para abrir a última página visitada
 driver.get(url)
 
-WebDriverWait(driver, 40).until(
+WebDriverWait(driver, 80).until(
     EC.presence_of_element_located((By.XPATH, '//*[@id="gsft_nav"]/div/magellan-favorites-list/ul/li[3]/div/div[1]/a/div[2]/span')))
 criar_novo = driver.find_element(By.XPATH, '//*[@id="gsft_nav"]/div/magellan-favorites-list/ul/li[3]/div/div[1]/a/div[2]/span')
 print(criar_novo.text)
@@ -102,8 +102,12 @@ try:
     driver.find_element(By.ID, 'incident.u_data_points').clear()
     driver.find_element(By.ID, 'incident.u_data_points').send_keys(dp)
     # data_points = driver.find_element(By.ID, 'incident.u_data_points')
-    print(dp)
+    # print(dp)
 except:
     print('Não tem DP') 
 
-time.sleep(200)
+# WebDriverWait(driver, 200).until(
+#     EC.element_located_to_be_selected
+# )
+
+time.sleep(300)
