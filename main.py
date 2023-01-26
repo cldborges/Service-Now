@@ -7,12 +7,14 @@ from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.support.ui import Select
 import time
 import pandas as pd
+from funcoes import *
 
 
 costumer_id = input('Identificação do usuário: ').strip()
 linha = int(input('Qual a linha?: ') ) - 2
 
-df = pd.read_excel('teste.xlsm') #(r'C:\Users\z0026jjc\OneDrive - Atos\teste.xlsm')
+# df = pd.read_excel('C:/Temp/teste.xlsm') 
+df = pd.read_excel('C:/Users/z0026jjc/OneDrive - Atos/teste.xlsm') # O arquivo precisa estar fechado, por isso uso uma cópia para consulta em tempo real
 df = df.drop(['Cod_Category', 'Cod_Category2', 'Cod_Category3', 'Template', ], axis='columns')
 
 # category = input('Categoria: ')
@@ -40,13 +42,15 @@ driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager(p
 #alterar nas configurações do navegador para abrir a última página visitada
 driver.get(url)
 
+driver.maximize_window()
+
 WebDriverWait(driver, 80).until(
     EC.presence_of_element_located((By.XPATH, '//*[@id="gsft_nav"]/div/magellan-favorites-list/ul/li[3]/div/div[1]/a/div[2]/span')))
 criar_novo = driver.find_element(By.XPATH, '//*[@id="gsft_nav"]/div/magellan-favorites-list/ul/li[3]/div/div[1]/a/div[2]/span')
 print(criar_novo.text)
 time.sleep(5)
 criar_novo.click()
-time.sleep(7)
+time.sleep(6)
 
 driver.switch_to.frame('gsft_main')
 
@@ -110,4 +114,4 @@ except:
 #     EC.element_located_to_be_selected
 # )
 
-time.sleep(300)
+time.sleep(500)
