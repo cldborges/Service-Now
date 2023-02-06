@@ -14,7 +14,7 @@ costumer_id = input('Identificação do usuário: ').strip()
 linha = int(input('Qual a linha?: ') ) - 2
 
 # df = pd.read_excel('C:/Temp/teste.xlsm') 
-df = pd.read_excel('C:/Users/z0026jjc/OneDrive - Atos/teste.xlsm') # O arquivo precisa estar fechado, por isso uso uma cópia para consulta em tempo real
+df = pd.read_excel('C:/Users/z0026jjc/OneDrive - Atos/Base de dados dos chamados - Python.xlsm') # O arquivo precisa estar fechado, por isso uso uma cópia para consulta em tempo real
 df = df.drop(['Cod_Category', 'Cod_Category2', 'Cod_Category3', 'Template', ], axis='columns')
 
 # category = input('Categoria: ')
@@ -114,4 +114,4 @@ except:
 #     EC.element_located_to_be_selected
 # )
 
-time.sleep(500)
+time.sleep(1000)
