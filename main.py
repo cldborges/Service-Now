@@ -8,10 +8,13 @@ from selenium.webdriver.support.ui import Select
 import time
 import pandas as pd
 from funcoes import *
+import easygui
 
 
-costumer_id = input('Identificação do usuário: ').strip()
-linha = int(input('Qual a linha?: ') ) - 2
+# costumer_id = input('Identificação do usuário: ').strip()
+# linha = int(input('Qual a linha?: ') ) - 2
+costumer_id = easygui.enterbox('Identificação do usuário: ').strip()
+linha = int(easygui.enterbox('Qual a linha?: ') ) - 2
 
 # df = pd.read_excel('C:/Temp/teste.xlsm') 
 df = pd.read_excel('C:/Users/z0026jjc/OneDrive - Atos/Base de dados dos chamados - Python.xlsm') # O arquivo precisa estar fechado, por isso uso uma cópia para consulta em tempo real
@@ -113,5 +116,13 @@ except:
 # WebDriverWait(driver, 200).until(
 #     EC.element_located_to_be_selected
 # )
+
+prosseguir = easygui.boolbox('Prosseguir com o registro do chamado?')
+
+if prosseguir == True:
+    driver.find_element(By.ID, 'sysverb_insert').click()
+else:
+    print(prosseguir)
+    driver.quit()
 
 time.sleep(1000)
