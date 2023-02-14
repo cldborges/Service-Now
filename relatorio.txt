@@ -1,3 +1,1 @@
-Incidentes: 5
-Requests: 10
-Passíveis de remoto: 1
+{'incidentes': 5, 'requests': 10, 'nao_remotos': 1}

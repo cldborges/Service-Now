@@ -5,6 +5,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support import expected_conditions as EC
 from funcoes import *
+import easygui
 
 
 # Ler credenciais
@@ -29,7 +30,7 @@ driver.find_element(By.NAME, 'submit').click()
 button = driver.find_element(By.XPATH, '//button[text()="AUTH"]').click()
 driver.find_element(By.NAME, 'com.siemens.dxa.applications.web.authn.challenging.username').send_keys('A402958')
 driver.find_element(By.NAME, 'com.siemens.dxa.applications.web.authn.challenging.response').send_keys(senha)
-token = input('Digite o token: ')
+token = easygui.enterbox('Digite o token: ')
 driver.find_element(By.NAME, 'com.siemens.dxa.applications.web.authn.challenging.response2').send_keys(token)
 driver.find_element(By.CLASS_NAME, 'btn-block').click()
 WebDriverWait(driver, 80).until(

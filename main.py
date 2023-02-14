@@ -15,6 +15,7 @@ import easygui
 # linha = int(input('Qual a linha?: ') ) - 2
 costumer_id = easygui.enterbox('Identificação do usuário: ').strip()
 linha = int(easygui.enterbox('Qual a linha?: ') ) - 2
+remoto = easygui.boolbox('É passível de remoto?')
 
 # df = pd.read_excel('C:/Temp/teste.xlsm') 
 df = pd.read_excel('C:/Users/z0026jjc/OneDrive - Atos/Base de dados dos chamados - Python.xlsm') # O arquivo precisa estar fechado, por isso uso uma cópia para consulta em tempo real

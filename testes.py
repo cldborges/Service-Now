@@ -287,9 +287,12 @@ class TestWebDriverWait(object):
         assert 'alerty' == alert.text
         alert.dismiss()
 
-import easygui
-myvar = easygui.boolbox("What, is your favorite color?")
-print (myvar)
+# import easygui
+# myvar = easygui.boolbox("What, is your favorite color?")
+# print (myvar)
 
 # import ctypes  # An included library with Python install.   
 # ctypes.windll.user32.MessageBoxW(0, "Your text", "Your title", 1)
+
+import json
+
