@@ -39,15 +39,15 @@ def relatorio(tipo, nao_remoto):
     nao_remotos = rel_txt.get('nao_remotos')
     # print(incidentes)
 
-    if tipo == 'incident':
+    if tipo == 'Incident':
         incidentes += 1
-    if tipo == 'request':
+    if tipo == 'Service Request':
         requests += 1
     if nao_remoto == False:
         nao_remotos += 1
 
 
-    relat = f'Incidentes: {incidentes}\nRequests: {requests}\nPassíveis de remoto: {nao_remotos}'
+    relat = f'Incidentes: {incidentes}\nRequests: {requests}\nNão passíveis de remoto: {nao_remotos}'
 
     rel_atual = {'incidentes': incidentes, 'requests': requests, 'nao_remotos': nao_remotos}
 
@@ -58,4 +58,4 @@ def relatorio(tipo, nao_remoto):
     print(relat)
 
 
-relatorio('incident', False)
+# relatorio('incident', False)

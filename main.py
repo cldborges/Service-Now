@@ -126,4 +126,6 @@ else:
     print(prosseguir)
     driver.quit()
 
+relatorio(tipo, remoto)
+
 time.sleep(1000)
