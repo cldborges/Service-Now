@@ -12,4 +12,4 @@ driver.get(url)
 
 driver.maximize_window()
 
-time.sleep(1000)
+time.sleep(10000)

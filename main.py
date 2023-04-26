@@ -11,8 +11,6 @@ from funcoes import *
 import easygui
 
 
-# costumer_id = input('Identificação do usuário: ').strip()
-# linha = int(input('Qual a linha?: ') ) - 2
 costumer_id = easygui.enterbox('Identificação do usuário: ').strip()
 linha = int(easygui.enterbox('Qual a linha?: ') ) - 2
 remoto = easygui.boolbox('É passível de remoto?')
@@ -20,14 +18,6 @@ remoto = easygui.boolbox('É passível de remoto?')
 # df = pd.read_excel('C:/Temp/teste.xlsm') 
 df = pd.read_excel('C:/Users/z0026jjc/OneDrive - Atos/Base de dados dos chamados - Python.xlsm') # O arquivo precisa estar fechado, por isso uso uma cópia para consulta em tempo real
 df = df.drop(['Cod_Category', 'Cod_Category2', 'Cod_Category3', 'Template', ], axis='columns')
-
-# category = input('Categoria: ')
-# subcategory = input('Subcategoria: ')
-# subsubcategory = input('Subsubcategoria: ')
-# short_description = input('Título: ')
-# description = input('Descrição: ')
-# tipo = input('Tipo: ')
-# data_points = input('Identificação do usuário: ')
 
 category = df.loc[linha, 'Category']
 subcategory = df.loc[linha, 'Subcategory']
@@ -38,14 +28,12 @@ tipo = df.loc[linha, 'Tipo']
 if pd.isnull(tipo):
     tipo = 'Incident'
 
-
 url = 'https://siemens.service-now.com'
 options = webdriver.ChromeOptions()
 options.add_argument(r'--user-data-dir=C:/Temp/Sessoes/UserData/') #caso dê erros com o caminho, principalmente quando termina com \, alterar as barras para /
 driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager(path = r"C:\Temp\Sessoes\chromedriver").install()))
 #alterar nas configurações do navegador para abrir a última página visitada
 driver.get(url)
-
 driver.maximize_window()
 
 WebDriverWait(driver, 80).until(
@@ -69,7 +57,6 @@ try:
 except:
     pass
 
-# time.sleep(30)
 WebDriverWait(driver, 15).until(
     EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.category"]/option[2]'))) #verifica se estão aparecendo mais de uma opção no Category
 Select(driver.find_element(By.ID, 'sys_select.incident.category')).select_by_visible_text(category)
@@ -79,8 +66,6 @@ Select(driver.find_element(By.ID, 'sys_select.incident.subcategory')).select_by_
 WebDriverWait(driver, 15).until(
     EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.u_subsubcategory"]/option[2]')))
 Select(driver.find_element(By.ID, 'sys_select.incident.u_subsubcategory')).select_by_visible_text(subsubcategory)
-
-
 
 time.sleep(3)
 driver.find_element(By.ID, 'sys_display.incident.assignment_group').clear()
@@ -94,8 +79,6 @@ driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('BORGES
 
 driver.find_element(By.ID, 'incident.short_description').send_keys(short_description)
 driver.find_element(By.ID, 'incident.description').send_keys(description)
-
-#driver.find_element(By., '//*[@id="tabs2_section"]/span[3]/span[1]').click()
 
 driver.find_element(By.XPATH, '//span[text()="Notes"]').click()
 
@@ -114,18 +97,26 @@ try:
 except:
     print('Não tem DP') 
 
-# WebDriverWait(driver, 200).until(
-#     EC.element_located_to_be_selected
-# )
-
 prosseguir = easygui.boolbox('Prosseguir com o registro do chamado?')
 
+relatorio(tipo, remoto)
+
 if prosseguir == True:
+    inc = driver.find_element(By.ID, 'sys_readonly.incident.number').get_attribute('value')
+    print(inc)
     driver.find_element(By.ID, 'sysverb_insert').click()
+    WebDriverWait(driver, 120).until(
+        EC.element_to_be_clickable((By.LINK_TEXT, inc)))
+
+    driver.find_element(By.LINK_TEXT, inc).click()
+    WebDriverWait(driver, 30).until(
+        EC.element_to_be_clickable((By.XPATH, '//span[text()="Closure Information"]')))
+    driver.find_element(By.XPATH, '//span[text()="Closure Information"]').click()
+    # time.sleep(10)
+    Select(driver.find_element(By.ID, 'incident.close_code')).select_by_visible_text('Solved (Permanently)')
+
 else:
     print(prosseguir)
     driver.quit()
-
-relatorio(tipo, remoto)
 
 time.sleep(1000)
