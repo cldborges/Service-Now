@@ -21,6 +21,10 @@ df = df.drop(['Cod_Category', 'Cod_Category2', 'Cod_Category3', 'Template', ], a
 
 category = df.loc[linha, 'Category']
 subcategory = df.loc[linha, 'Subcategory']
+if subcategory == 'DWP Win 10 Local Client':
+    accenture = easygui.boolbox('É Accenture?')
+    if accenture == True:
+        subcategory = f'Accenture {subcategory}'
 subsubcategory = df.loc[linha, 'Subsubcategory']
 short_description = df.loc[linha, 'Short Description']
 description = df.loc[linha, 'Description']
@@ -63,9 +67,19 @@ Select(driver.find_element(By.ID, 'sys_select.incident.category')).select_by_vis
 WebDriverWait(driver, 15).until(
     EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.subcategory"]/option[2]'))) 
 Select(driver.find_element(By.ID, 'sys_select.incident.subcategory')).select_by_visible_text(subcategory)
-WebDriverWait(driver, 15).until(
-    EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.u_subsubcategory"]/option[2]')))
-Select(driver.find_element(By.ID, 'sys_select.incident.u_subsubcategory')).select_by_visible_text(subsubcategory)
+try:
+    WebDriverWait(driver, 15).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.u_subsubcategory"]/option[2]')))
+    Select(driver.find_element(By.ID, 'sys_select.incident.u_subsubcategory')).select_by_visible_text(subsubcategory)
+except:
+    subcategory = 'DWP Win 10 Local Client'
+    WebDriverWait(driver, 15).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.subcategory"]/option[2]'))) 
+    Select(driver.find_element(By.ID, 'sys_select.incident.subcategory')).select_by_visible_text(subcategory)
+    # time.sleep(3)
+    WebDriverWait(driver, 15).until(
+        EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.u_subsubcategory"]/option[2]')))
+    Select(driver.find_element(By.ID, 'sys_select.incident.u_subsubcategory')).select_by_visible_text(subsubcategory)
 
 time.sleep(3)
 driver.find_element(By.ID, 'sys_display.incident.assignment_group').clear()
