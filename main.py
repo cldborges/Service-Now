@@ -89,7 +89,7 @@ driver.find_element(By.ID, 'sys_display.incident.assignment_group').send_keys('I
 Select(driver.find_element(By.ID, 'incident.u_type')).select_by_visible_text(tipo)
 
 time.sleep(3)
-driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('BORGES CLAUDIO (IT DF SIAM STG)')
+driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('BORGES CLAUDIO (IT DF SIAM GOV)')
 
 driver.find_element(By.ID, 'incident.short_description').send_keys(short_description)
 driver.find_element(By.ID, 'incident.description').send_keys(description)
@@ -133,4 +133,8 @@ else:
     print(prosseguir)
     driver.quit()
 
-time.sleep(1000)
+# time.sleep(1000)
+
+#verifica se o "State" está como 'Resolved'
+WebDriverWait(driver, 300).until(
+    EC.text_to_be_present_in_element_value((By.ID, 'sys_readonly.incident.state'), '6'))
