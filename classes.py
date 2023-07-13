@@ -1,0 +1,2 @@
+class GIDInvalido(Exception):
+    pass

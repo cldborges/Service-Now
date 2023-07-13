@@ -8,6 +8,7 @@ from selenium.webdriver.support.ui import Select
 import time
 import pandas as pd
 from funcoes import *
+from classes import *
 import easygui
 
 try:
@@ -61,8 +62,11 @@ try:
     except:
         pass
 
-    WebDriverWait(driver, 15).until(
-        EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.category"]/option[2]'))) #verifica se estão aparecendo mais de uma opção no Category
+    try: 
+        WebDriverWait(driver, 15).until(
+            EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.category"]/option[2]'))) #verifica se estão aparecendo mais de uma opção no Category
+    except:
+         raise GIDInvalido('GID inválido')
     Select(driver.find_element(By.ID, 'sys_select.incident.category')).select_by_visible_text(category)
     WebDriverWait(driver, 15).until(
         EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.subcategory"]/option[2]'))) 
