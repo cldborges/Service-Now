@@ -10,16 +10,8 @@ import pandas as pd
 from funcoes import *
 from classes import *
 import easygui
-import ctypes
 
 
-# Constantes da API do Windows
-SW_MINIMIZE = 6
-HWND = ctypes.windll.kernel32.GetConsoleWindow()
-
-# Função da API do Windows para minimizar a janela
-def minimize_console_window():
-    ctypes.windll.user32.ShowWindow(HWND, SW_MINIMIZE)
 minimize_console_window()
 
 try:

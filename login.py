@@ -7,6 +7,7 @@ from selenium.webdriver.support import expected_conditions as EC
 from funcoes import *
 import easygui
 
+minimize_console_window()
 
 # Ler credenciais
 try:

@@ -1,4 +1,5 @@
 import json
+import ctypes
 
 def atualizar_credenciais(usuario='', senha=''):
     if usuario =='':
@@ -59,3 +60,12 @@ def relatorio(tipo, nao_remoto):
 
 
 # relatorio('incident', False)
+
+
+def minimize_console_window():
+    
+# Constantes da API do Windows
+    SW_MINIMIZE = 6
+    HWND = ctypes.windll.kernel32.GetConsoleWindow()
+# Função da API do Windows para minimizar a janela
+    ctypes.windll.user32.ShowWindow(HWND, SW_MINIMIZE)
