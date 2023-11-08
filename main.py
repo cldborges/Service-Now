@@ -16,6 +16,7 @@ minimize_console_window()
 
 try:
     costumer_id = easygui.enterbox('Identificação do usuário: ').strip()
+    costumer_id = costumer_id.replace(',', '')
     linha = int(easygui.enterbox('Qual a linha?: ') ) - 2
     remoto = easygui.boolbox('É passível de remoto?')
 
@@ -25,10 +26,10 @@ try:
 
     category = df.loc[linha, 'Category']
     subcategory = df.loc[linha, 'Subcategory']
-    if subcategory == 'DWP Win 10 Local Client':
-        accenture = easygui.boolbox('É Accenture?')
-        if accenture == True:
-            subcategory = f'Accenture {subcategory}'
+    # if subcategory == 'DWP Win 10 Local Client':
+    #     accenture = easygui.boolbox('É Accenture?')
+    #     if accenture == True:
+    #         subcategory = f'Accenture {subcategory}'
     subsubcategory = df.loc[linha, 'Subsubcategory']
     short_description = df.loc[linha, 'Short Description']
     description = df.loc[linha, 'Description']

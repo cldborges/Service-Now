@@ -30,7 +30,9 @@ def login():
         EC.element_to_be_clickable((By.ID, '1-email')))
     driver.find_element(By.ID, '1-email').send_keys('c@atos.net')
     driver.find_element(By.NAME, 'submit').click()
-    button = driver.find_element(By.XPATH, '//button[text()="AUTH"]').click()
+    WebDriverWait(driver, 20).until(
+        EC.element_to_be_clickable((By.XPATH, '//button[text()="AUTH"]')))
+    driver.find_element(By.XPATH, '//button[text()="AUTH"]').click()
     driver.find_element(By.NAME, 'com.siemens.dxa.applications.web.authn.challenging.username').send_keys('A402958')
     driver.find_element(By.NAME, 'com.siemens.dxa.applications.web.authn.challenging.response').send_keys(senha)
     token = easygui.enterbox('Digite o token: ')

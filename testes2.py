@@ -34,3 +34,6 @@
  
 # time.sleep(1000)
 
+costumer_id = 'z0026jjc,'
+costumer_id = costumer_id.replace(',', '')
+print(costumer_id)
