@@ -36,8 +36,10 @@ try:
     tipo = df.loc[linha, 'Tipo']
     if pd.isnull(tipo):
         tipo = 'Incident'
+    resolucao = df.loc[linha, 'Resolução']
 
     url = 'https://siemens.service-now.com'
+    # url = 'https://siemens.service-now.com/login_with_sso.do?glide_sso_id=2786c102db3298100e1f772b68961925'
     options = webdriver.ChromeOptions()
     # options.add_argument(r'--user-data-dir=C:/Temp/Sessoes/UserData/') #caso dê erros com o caminho, principalmente quando termina com \, alterar as barras para /
     # driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager(path = r"C:\Temp\Sessoes\chromedriver").install()))
@@ -49,7 +51,9 @@ try:
 
     WebDriverWait(driver, 80).until(
         EC.presence_of_element_located((By.XPATH, '//*[@id="gsft_nav"]/div/magellan-favorites-list/ul/li[3]/div/div[1]/a/div[2]/span')))
-    criar_novo = driver.find_element(By.XPATH, '//*[@id="gsft_nav"]/div/magellan-favorites-list/ul/li[3]/div/div[1]/a/div[2]/span')
+    # botão criar novo
+    criar_novo = driver.find_element(By.LINK_TEXT, 'Incident Management - Create New')
+    # criar_novo = driver.find_element(By.XPATH, '//*[@id="gsft_nav"]/div/magellan-favorites-list/ul/li[3]/div/div[1]/a/div[2]/span')
     print(criar_novo.text)
     time.sleep(5)
     criar_novo.click()
@@ -99,7 +103,7 @@ try:
     Select(driver.find_element(By.ID, 'incident.u_type')).select_by_visible_text(tipo)
 
     time.sleep(3)
-    driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('BORGES CLAUDIO (IT DF SIAM GOV)')
+    driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('Borges Claudio Ferreira (RC-BR IT UIT)')
 
     driver.find_element(By.ID, 'incident.short_description').send_keys(short_description)
     driver.find_element(By.ID, 'incident.description').send_keys(description)
@@ -138,6 +142,8 @@ try:
         driver.find_element(By.XPATH, '//span[text()="Closure Information"]').click()
         # time.sleep(10)
         Select(driver.find_element(By.ID, 'incident.close_code')).select_by_visible_text('Solved (Permanently)')
+        if resolucao != 'nan':
+            driver.find_element(By.ID, 'incident.close_notes').send_keys(resolucao)
 
     else:
         print(prosseguir)

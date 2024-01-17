@@ -1,1 +1,1 @@
-{'incidentes': 5, 'requests': 10, 'nao_remotos': 1}
+{'incidentes': 0, 'requests': 0, 'nao_remotos': 0}
