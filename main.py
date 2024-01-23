@@ -20,6 +20,9 @@ try:
     linha = int(easygui.enterbox('Qual a linha?: ') ) - 2
     remoto = easygui.boolbox('É passível de remoto?')
 
+    if '.' in costumer_id and '@' not in costumer_id:
+        costumer_id += '@siemens.com'
+
     # df = pd.read_excel('C:/Temp/teste.xlsm') 
     df = pd.read_excel('C:/Users/z0026jjc/OneDrive - Atos/Base de dados dos chamados - Python.xlsm') # O arquivo precisa estar fechado, por isso uso uma cópia para consulta em tempo real
     df = df.drop(['Cod_Category', 'Cod_Category2', 'Cod_Category3', 'Template', ], axis='columns')
@@ -45,7 +48,7 @@ try:
     # driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager(path = r"C:\Temp\Sessoes\chromedriver").install()))
     options.add_argument(r'--user-data-dir=C:/Temp/Sessoes/UserData/') #caso dê erros com o caminho, principalmente quando termina com \, alterar as barras para /
     driver = webdriver.Chrome(options=options)
-    #alterar nas configurações do navegador para abrir a última página visitada
+    # IMPORTANTE - alterar nas configurações do navegador para abrir a última página visitada
     driver.get(url)
     driver.maximize_window()
 
@@ -133,6 +136,11 @@ try:
         inc = driver.find_element(By.ID, 'sys_readonly.incident.number').get_attribute('value')
         print(inc)
         driver.find_element(By.ID, 'sysverb_insert').click()
+        # entrar no incidentes abertos para mim
+        time.sleep(5)
+        # assignados_para_mim = driver.find_element(By.LINK_TEXT, 'Assigned to me')
+        driver.find_element(By.CSS_SELECTOR, 'gsft_nav > div > magellan-favorites-list > ul > li:nth-child(5) > div > div:nth-child(1) > a > div:nth-child(2) > span').click()
+        # assignados_para_mim.click()
         WebDriverWait(driver, 120).until(
             EC.element_to_be_clickable((By.LINK_TEXT, inc)))
         time.sleep(1)
