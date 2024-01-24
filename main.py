@@ -136,11 +136,17 @@ try:
         inc = driver.find_element(By.ID, 'sys_readonly.incident.number').get_attribute('value')
         print(inc)
         driver.find_element(By.ID, 'sysverb_insert').click()
+        
         # entrar no incidentes abertos para mim
-        time.sleep(5)
-        # assignados_para_mim = driver.find_element(By.LINK_TEXT, 'Assigned to me')
-        driver.find_element(By.CSS_SELECTOR, 'gsft_nav > div > magellan-favorites-list > ul > li:nth-child(5) > div > div:nth-child(1) > a > div:nth-child(2) > span').click()
+        # time.sleep(5)
+        driver.switch_to.default_content()
+        WebDriverWait(driver, 60).until(
+            EC.element_to_be_clickable((By.LINK_TEXT, 'Assigned to me')))
+        driver.find_element(By.LINK_TEXT, 'Assigned to me').click()
+        # driver.find_element(By.CSS_SELECTOR, 'gsft_nav > div > magellan-favorites-list > ul > li:nth-child(5) > div > div:nth-child(1) > a > div:nth-child(2) > span').click()
         # assignados_para_mim.click()
+        driver.switch_to.frame('gsft_main')
+
         WebDriverWait(driver, 120).until(
             EC.element_to_be_clickable((By.LINK_TEXT, inc)))
         time.sleep(1)
