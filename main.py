@@ -127,6 +127,14 @@ try:
         # print(dp)
     except:
         print('Não tem DP') 
+    
+    # verificar se precisa preencher a tradução e seleciona caso precise
+    translation = driver.find_element(By.CSS_SELECTOR, '#tabs2_section > span:nth-child(4) > span.tabs2_tab.default-focus-outline > span.label_description')
+    print(translation.text)
+    if translation.text == '*':
+        translation.click()
+        Select(driver.find_element(By.ID, 'incident.u_user_language')).select_by_visible_text('Portuguese')
+
 
     prosseguir = easygui.boolbox('Prosseguir com o registro do chamado?')
 
