@@ -35,6 +35,7 @@ try:
     #         subcategory = f'Accenture {subcategory}'
     subsubcategory = df.loc[linha, 'Subsubcategory']
     short_description = df.loc[linha, 'Short Description']
+    short_description = '#UIT - ' + short_description
     description = df.loc[linha, 'Description']
     tipo = df.loc[linha, 'Tipo']
     if pd.isnull(tipo):
