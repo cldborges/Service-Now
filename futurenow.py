@@ -40,10 +40,15 @@ try:
     #         subcategory = f'Accenture {subcategory}'
     subsubcategory = df.loc[linha, 'Subsubcategory']
     categorization = df.loc[linha, 'Categorization']
+    categorization_bool = True
     if pd.isnull(categorization):
-        categorization = easygui.enterbox('Qual o Categorization?')
-    if categorization == None:
+        # categorization = easygui.enterbox('Qual o Categorization?')
         categorization = f'{category} / {subcategory} / {subsubcategory}'
+        categorization_bool = easygui.boolbox(f'Categorization vazio, deseja usar a categorização antiga? - {categorization}')
+        
+
+    # if categorization == None:
+    #     categorization = f'{category} / {subcategory} / {subsubcategory}'
 
     # categorization = 'Collaboration / MobileIT / Android'
     short_description = df.loc[linha, 'Short Description']
@@ -115,15 +120,19 @@ try:
     #     WebDriverWait(driver, 15).until(
     #         EC.presence_of_element_located((By.XPATH, '//*[@id="sys_select.incident.u_subsubcategory"]/option[2]')))
     #     Select(driver.find_element(By.ID, 'sys_select.incident.u_subsubcategory')).select_by_visible_text(subsubcategory)
-    if categorization != None:
+    if categorization_bool == True:
+    # if categorization != None:
         driver.find_element(By.ID, 'sys_display.incident.u_categorization').send_keys(categorization)
         time.sleep(5)
-        callback = driver.find_element(By.ID, 'incident.u_callback_number')
-        if callback.text == '':
-            callback.send_keys('TEAMS')
+
         driver.find_element(By.CSS_SELECTOR, r'#label\.incident\.u_categorization > label > span.label-text').click()
     else:
         easygui.msgbox('Preencha o Categorization e aperte o OK')
+    time.sleep(5)
+    callback = driver.find_element(By.ID, 'incident.u_callback_number')
+    callback_txt = callback.get_attribute('value')
+    if callback_txt == '':
+        callback.send_keys('TEAMS')
         
     # elem_categorization = driver.find_element(By.ID, 'sys_display.incident.u_categorization')
     # elem_categorization.send_keys(categorization)
