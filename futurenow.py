@@ -61,6 +61,8 @@ try:
     if pd.isnull(tipo):
         tipo = 'Incident'
     resolucao = df.loc[linha, 'Resolução']
+    if pd.isnull(resolucao):
+        resolucao = df.loc[linha, 'Resolução-ing']
 
     # url = 'https://siemensfuturenowprod.service-now.com/partner'
     # url = 'https://siemensfuturenowprod.service-now.com/now/nav/ui/home'
