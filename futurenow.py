@@ -44,7 +44,10 @@ try:
     if pd.isnull(categorization):
         # categorization = easygui.enterbox('Qual o Categorization?')
         categorization = f'{category} / {subcategory} / {subsubcategory}'
-        categorization_bool = easygui.boolbox(f'Categorization vazio, deseja usar a categorização antiga? - {categorization}')
+        if categorization == 'nan / nan / nan':
+            categorization_bool = False
+        else:
+            categorization_bool = easygui.boolbox(f'Categorization vazio, deseja usar a categorização antiga? - {categorization}')
         
 
     # if categorization == None:
