@@ -41,7 +41,7 @@ try:
     subsubcategory = df.loc[linha, 'Subsubcategory']
     categorization = df.loc[linha, 'Categorization']
     categorization_bool = True
-    if pd.isnull(categorization):
+    if pd.isnull(categorization) or categorization == 'Ok':
         # categorization = easygui.enterbox('Qual o Categorization?')
         categorization = f'{category} / {subcategory} / {subsubcategory}'
         if categorization == 'nan / nan / nan':
@@ -131,6 +131,12 @@ try:
         time.sleep(5)
 
         driver.find_element(By.CSS_SELECTOR, r'#label\.incident\.u_categorization > label > span.label-text').click()
+        try:
+            categorization_invalido = WebDriverWait(driver, 6).until(
+            EC.presence_of_element_located((By.ID, 'incident.u_categorization_fieldmsg')))
+            easygui.msgbox('Categorization inválido, preencha e aperte o OK')
+        except:
+            pass
     else:
         easygui.msgbox('Preencha o Categorization e aperte o OK')
     time.sleep(5)
@@ -144,7 +150,7 @@ try:
     # elem_categorization.click()
 
     
-    time.sleep(3)
+    # time.sleep(3)
     Select(driver.find_element(By.ID, 'incident.u_type')).select_by_visible_text(tipo)
 
     time.sleep(3)
@@ -166,18 +172,18 @@ try:
 
     time.sleep(3)
 
-    try:
-        WebDriverWait(driver, 5).until(
-            EC.presence_of_element_located((By.ID, 'incident.u_data_points')))
+    # try:
+    #     WebDriverWait(driver, 5).until(
+    #         EC.presence_of_element_located((By.ID, 'incident.u_data_points')))
 
-        dp = driver.find_element(By.ID, 'incident.u_data_points').get_attribute('value')
-        dp = dp.replace('!!!', '!!!!')
-        driver.find_element(By.ID, 'incident.u_data_points').clear()
-        driver.find_element(By.ID, 'incident.u_data_points').send_keys(dp)
-        # data_points = driver.find_element(By.ID, 'incident.u_data_points')
-        # print(dp)
-    except:
-        print('Não tem DP') 
+    #     dp = driver.find_element(By.ID, 'incident.u_data_points').get_attribute('value')
+    #     dp = dp.replace('!!!', '!!!!')
+    #     driver.find_element(By.ID, 'incident.u_data_points').clear()
+    #     driver.find_element(By.ID, 'incident.u_data_points').send_keys(dp)
+    #     # data_points = driver.find_element(By.ID, 'incident.u_data_points')
+    #     # print(dp)
+    # except:
+    #     print('Não tem DP') 
     
     # verificar se precisa preencher a tradução e seleciona caso precise
     translation = driver.find_element(By.CSS_SELECTOR, '#tabs2_section > span:nth-child(10) > span.tabs2_tab.default-focus-outline > span.label_description')
