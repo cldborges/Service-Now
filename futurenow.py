@@ -68,6 +68,7 @@ try:
     # url = 'https://siemensfuturenowprod.service-now.com/now/nav/ui/home'
     url = 'https://siemensfuturenowprod.service-now.com/incident.do?sys_id=-1&sysparm_query=active=true&sysparm_stack=incident_list.do?sysparm_query=active=true'
     options = webdriver.ChromeOptions()
+    options.set_capability('unhandledPromptBehavior', 'dismiss')
     # options.add_argument(r'--user-data-dir=C:/Temp/Sessoes/UserData/') #caso dê erros com o caminho, principalmente quando termina com \, alterar as barras para /
     # driver = webdriver.Chrome(options=options, service=Service(ChromeDriverManager(path = r"C:\Temp\Sessoes\chromedriver").install()))
     options.add_argument(r'--user-data-dir=C:/Temp/Sessoes/UserData/') #caso dê erros com o caminho, principalmente quando termina com \, alterar as barras para /
@@ -91,8 +92,23 @@ try:
 
     # WebDriverWait(driver, 20).until(
     #     EC.presence_of_element_located((By.XPATH, '//*[@id="label.incident.caller_id"]/label/span[2]'))) #//*[@id="sys_display.incident.caller_id"]
-    WebDriverWait(driver, 20).until(
-        EC.presence_of_element_located((By.CSS_SELECTOR, r'#label\.incident\.location > label > span.label-text'))) #//*[@id="sys_display.incident.caller_id"]
+
+
+    # try:
+    #     WebDriverWait(driver, 15).until(
+    #         EC.presence_of_element_located((By.ID, 'i0118'))) #input senha 
+    #     print('pedindo senha')
+    #     driver.get('https://siemensfuturenowprod.service-now.com/partner')
+    # except:
+    #     pass
+    
+    try:
+        WebDriverWait(driver, 15).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, r'#label\.incident\.location > label > span.label-text'))) #//*[@id="sys_display.incident.caller_id"]
+    except:
+        driver.get(url)
+        WebDriverWait(driver, 20).until(
+            EC.presence_of_element_located((By.CSS_SELECTOR, r'#label\.incident\.location > label > span.label-text'))) #//*[@id="sys_display.incident.caller_id"]   
     # time.sleep(3)
     driver.find_element(By.ID, 'sys_display.incident.caller_id').send_keys(costumer_id) 
     time.sleep(3)
@@ -134,11 +150,11 @@ try:
         try:
             categorization_invalido = WebDriverWait(driver, 6).until(
             EC.presence_of_element_located((By.ID, 'incident.u_categorization_fieldmsg')))
-            easygui.msgbox('Categorization inválido, preencha e aperte o OK')
+            easygui.msgbox(f'Categorization inválido, preencha e aperte o OK. \n{short_description}')
         except:
             pass
     else:
-        easygui.msgbox('Preencha o Categorization e aperte o OK')
+        easygui.msgbox(f'Preencha o Categorization e aperte o OK. \n{short_description}')
     time.sleep(5)
     callback = driver.find_element(By.ID, 'incident.u_callback_number')
     callback_txt = callback.get_attribute('value')
