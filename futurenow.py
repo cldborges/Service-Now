@@ -20,7 +20,7 @@ try:
     linha = int(easygui.enterbox('Qual a linha?: ') ) - 2
     remoto = easygui.boolbox('É passível de remoto?')
 
-    # TESTES
+    # # TESTES (desativar o bloco de cima e ativar o de baixo)
     # costumer_id = 'z0026jjc'
     # linha = 7
     # remoto = False
@@ -64,9 +64,9 @@ try:
     if pd.isnull(resolucao):
         resolucao = df.loc[linha, 'Resolução-ing']
 
-    # url = 'https://siemensfuturenowprod.service-now.com/partner'
-    # url = 'https://siemensfuturenowprod.service-now.com/now/nav/ui/home'
-    url = 'https://siemensfuturenowprod.service-now.com/incident.do?sys_id=-1&sysparm_query=active=true&sysparm_stack=incident_list.do?sysparm_query=active=true'
+    # url = 'https://myit.siemens.com/now/nav/ui/home'
+    url = 'https://myit.siemens.com/incident.do?sys_id=-1&sysparm_query=active=true&sysparm_stack=incident_list.do?sysparm_query=active=true'
+    # url = 'https://siemensfuturenowprod.service-now.com/incident.do?sys_id=-1&sysparm_query=active=true&sysparm_stack=incident_list.do?sysparm_query=active=true'
     options = webdriver.ChromeOptions()
     options.set_capability('unhandledPromptBehavior', 'dismiss')
     # options.add_argument(r'--user-data-dir=C:/Temp/Sessoes/UserData/') #caso dê erros com o caminho, principalmente quando termina com \, alterar as barras para /
@@ -178,8 +178,8 @@ try:
 
     time.sleep(3)
     # driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('Borges Claudio Ferreira (RC-BR IT UIT)')
-    # driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('Borges, Claudio Ferreira (ext) (RC-BR IT UIT)')
-    driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('Borges, Claudio Ferreira (BP) (RC-BR IT UIT)')
+    driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('Borges, Claudio Ferreira (ext) (RC-BR IT UIT)')
+    # driver.find_element(By.ID, 'sys_display.incident.assigned_to').send_keys('Borges, Claudio Ferreira (BP) (RC-BR IT UIT)')
 
     driver.find_element(By.ID, 'incident.short_description').send_keys(short_description)
     driver.find_element(By.ID, 'incident.description').send_keys(description)
@@ -212,9 +212,8 @@ try:
 
     prosseguir = easygui.boolbox('Prosseguir com o registro do chamado?')
 
-    relatorio(tipo, remoto)
-
     if prosseguir == True:
+        relatorio(tipo, remoto)
         inc = driver.find_element(By.ID, 'sys_readonly.incident.number').get_attribute('value')
         print(inc)
         driver.find_element(By.ID, 'sysverb_insert').click()
@@ -229,8 +228,13 @@ try:
         # # driver.find_element(By.CSS_SELECTOR, 'gsft_nav > div > magellan-favorites-list > ul > li:nth-child(5) > div > div:nth-child(1) > a > div:nth-child(2) > span').click()
         # # assignados_para_mim.click()
 
-        WebDriverWait(driver, 120).until(
-            EC.element_to_be_clickable((By.LINK_TEXT, inc)))
+        try:
+            WebDriverWait(driver, 15).until(
+                EC.element_to_be_clickable((By.LINK_TEXT, inc)))
+        except:
+            driver.get('https://siemensfuturenowprod.service-now.com/incident_list.do?sysparm_userpref_module=b55fbec4c0a800090088e83d7ff500de&sysparm_fixed_query=active=true^assignment_groupDYNAMICd6435e965f510100a9ad2572f2b47744^stateNOT%20IN7,6')
+            WebDriverWait(driver, 15).until(
+                EC.element_to_be_clickable((By.LINK_TEXT, inc)))
         time.sleep(1)
         driver.find_element(By.LINK_TEXT, inc).click()
         WebDriverWait(driver, 30).until(
@@ -248,7 +252,7 @@ try:
     # time.sleep(1000)
 
     #verifica se o "State" está como 'Resolved'
-    WebDriverWait(driver, 1000).until(
+    WebDriverWait(driver, 10000).until(
         EC.text_to_be_present_in_element_value((By.ID, 'sys_readonly.incident.state'), '6')) # '6' não é o texto apresentado, é o atributo value da opção escolhida
 except Exception as e:
     print("Ocorreu um erro:", str(e))
