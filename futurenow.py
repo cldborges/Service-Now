@@ -28,10 +28,10 @@ try:
     if '.' in costumer_id and '@' not in costumer_id:
         costumer_id += '@siemens.com'
 
-    # df = pd.read_excel('C:/Temp/teste.xlsm') 
     df = pd.read_excel('C:/Users/z0026jjc/OneDrive - Atos/Base de dados dos chamados - Python.xlsm') # O arquivo precisa estar fechado, por isso uso uma cópia para consulta em tempo real
     df = df.drop(['Cod_Category', 'Cod_Category2', 'Cod_Category3', 'Template', ], axis='columns')
 
+    problema = df.loc[linha, 'Problema']
     category = df.loc[linha, 'Category']
     subcategory = df.loc[linha, 'Subcategory']
     # if subcategory == 'DWP Win 10 Local Client':
@@ -55,8 +55,17 @@ try:
 
     # categorization = 'Collaboration / MobileIT / Android'
     short_description = df.loc[linha, 'Short Description']
+    if '#' in short_description:
+        variavel = easygui.enterbox('Altere a #:', problema)
+        short_description = short_description.replace('#', variavel)
+        print(short_description)
     short_description = '#UIT - ' + short_description
     description = df.loc[linha, 'Description']
+    if '#' in description:
+        if not variavel:
+            variavel = easygui.enterbox('Altere a #:', problema)
+        description = description.replace('#', variavel)
+        print(description)
     tipo = df.loc[linha, 'Tipo']
     if pd.isnull(tipo):
         tipo = 'Incident'
