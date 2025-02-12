@@ -16,6 +16,8 @@ minimize_console_window()
 
 try:
     costumer_id = easygui.enterbox('Identificação do usuário: ').strip()
+    if not isinstance(costumer_id, str):
+        costumer_id = easygui.enterbox('Usuário inválido, favor digitar novamente').strip()
     costumer_id = costumer_id.replace(',', '')
     linha = int(easygui.enterbox('Qual a linha?: ') ) - 2
     remoto = easygui.boolbox('É passível de remoto?')
@@ -49,9 +51,15 @@ try:
         else:
             categorization_bool = easygui.boolbox(f'Categorization vazio, deseja usar a categorização antiga? - {categorization}')
         
-
-    # if categorization == None:
-    #     categorization = f'{category} / {subcategory} / {subsubcategory}'
+    # Verificar se é Windows 10 ou 11
+    if 'Win 10' in categorization or 'Win10' in categorization:
+        windows = easygui.choicebox('Qual o Windows?', 'Windows', ['Windows 10', 'Windows 11'], 1)
+        if windows == 'Windows 11':
+            categorization = categorization.replace('Win 10', 'Win 11')
+    elif 'Win 11' in categorization or 'Win11' in categorization:
+        windows = easygui.choicebox('Qual o Windows?', 'Windows', ['Windows 10', 'Windows 11'], 1)
+        if windows == 'Windows 10':
+            categorization = categorization.replace('Win 11', 'Win 10')
 
     # categorization = 'Collaboration / MobileIT / Android'
     short_description = df.loc[linha, 'Short Description']
@@ -112,9 +120,12 @@ try:
     #     pass
     
     try:
-        WebDriverWait(driver, 15).until(
+        WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, r'#label\.incident\.location > label > span.label-text'))) #//*[@id="sys_display.incident.caller_id"]
     except:
+        easygui.msgbox('Clique no botão após inserir as credenciais')
+        driver.get(url)
+        time.sleep(5)
         driver.get(url)
         WebDriverWait(driver, 20).until(
             EC.presence_of_element_located((By.CSS_SELECTOR, r'#label\.incident\.location > label > span.label-text'))) #//*[@id="sys_display.incident.caller_id"]   
@@ -241,7 +252,8 @@ try:
             WebDriverWait(driver, 15).until(
                 EC.element_to_be_clickable((By.LINK_TEXT, inc)))
         except:
-            driver.get('https://siemensfuturenowprod.service-now.com/incident_list.do?sysparm_userpref_module=b55fbec4c0a800090088e83d7ff500de&sysparm_fixed_query=active=true^assignment_groupDYNAMICd6435e965f510100a9ad2572f2b47744^stateNOT%20IN7,6')
+            driver.get('https://myit.siemens.com/incident_list.do?sysparm_query=active=true')
+            # driver.get('https://siemensfuturenowprod.service-now.com/incident_list.do?sysparm_userpref_module=b55fbec4c0a800090088e83d7ff500de&sysparm_fixed_query=active=true^assignment_groupDYNAMICd6435e965f510100a9ad2572f2b47744^stateNOT%20IN7,6')
             WebDriverWait(driver, 15).until(
                 EC.element_to_be_clickable((By.LINK_TEXT, inc)))
         time.sleep(1)
