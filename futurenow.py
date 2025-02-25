@@ -1,5 +1,6 @@
 # from webdriver_manager.chrome import ChromeDriverManager
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchWindowException, WebDriverException
 # from selenium.webdriver.chrome.service import Service
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
@@ -91,8 +92,31 @@ try:
     options.add_argument(r'--user-data-dir=C:/Temp/Sessoes/UserData/') #caso dê erros com o caminho, principalmente quando termina com \, alterar as barras para /
     driver = webdriver.Chrome(options=options)
     # IMPORTANTE - alterar nas configurações do navegador para abrir a última página visitada
-    driver.get(url)
-    driver.maximize_window()
+    
+    def open_url(driver, url):
+        try:
+            time.sleep(5)  # Adiciona um tempo de espera para garantir que o navegador tenha tempo suficiente para abrir
+            driver.get(url)
+            driver.maximize_window()
+        except NoSuchWindowException:
+            print("A janela do navegador foi fechada antes de acessar a URL.")
+            # Você pode adicionar um código aqui para reabrir a janela ou lidar com o erro de outra forma
+        except WebDriverException as e:
+            print(f"Ocorreu um erro: {e}")
+            # Lidar com outros erros do WebDriver
+
+    # Tentar abrir a URL até que seja bem-sucedido
+    max_attempts = 3
+    attempts = 0
+    while attempts < max_attempts:
+        try:
+            open_url(driver, url)
+            break
+        except NoSuchWindowException:
+            attempts += 1
+            print(f"Tentativa {attempts} falhou. Tentando novamente...")
+            driver = webdriver.Chrome(options=options)
+    # Lidar com outros erros do WebD
     # time.sleep(10)
     # WebDriverWait(driver, 80).until(
     #     EC.presence_of_element_located((By.XPATH, '//*[@id="gsft_nav"]/div/magellan-favorites-list/ul/li[3]/div/div[1]/a/div[2]/span')))
@@ -278,3 +302,9 @@ try:
 except Exception as e:
     print("Ocorreu um erro:", str(e))
     easygui.exceptionbox("Ocorreu um erro:", str(e))
+
+    # implementar depois que caso envie uma lista em costumer_id, ele faça o processo para cada um
+    # if ',' in costumer_id:
+    #     costumer_id = costumer_id.split(',')
+    #     for i in costumer_id:
+    #         print(i)
